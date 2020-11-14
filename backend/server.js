@@ -48,8 +48,12 @@ app.get('/api/users', async (req, res) => {
     // });
 
     //api/tours?duration=5&difficulty=easy
-    const users = await User.find(req.query).sort('asc');
+    const users = await User.find(req.query).sort('asc').populate({
+      path: 'users',
+      select: '-_v -password',
+    });
 
+    // const users = await User.find(req.query).sort('asc').populate('users');
     //2
 
     const users4 = await User.find({})
