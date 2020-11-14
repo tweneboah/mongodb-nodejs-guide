@@ -1,0 +1,27 @@
+{
+  "name": "mongodb-nodejs-guide",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node -r esm backend/server.js",
+    "server": "nodemon -r esm backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tweneboah/mongodb-nodejs-guide.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tweneboah/mongodb-nodejs-guide/issues"
+  },
+  "homepage": "https://github.com/tweneboah/mongodb-nodejs-guide#readme",
+  "dependencies": {
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.14",
+    "nodemon": "^2.0.6"
+  }
+}
