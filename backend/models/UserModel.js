@@ -1,24 +1,23 @@
 import mongoose from 'mongoose';
-import slugify from 'slugify';
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    firstName: {
       type: String,
+      required: [true, 'First name is required'],
     },
-    email: {
+    lastName: {
       type: String,
-    },
-    password: {
-      type: String,
+      required: [true, 'Last name is required'],
     },
     age: {
       type: Number,
+      required: [true, 'Age  is required'],
     },
-    dateOfBith: {
+    tryPeriod: {
       type: Date,
+      default: Date.now(),
     },
-    slug: String,
   },
   {
     toJSON: {
@@ -30,46 +29,29 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-//==============
-//VIRTUAL PROPERTIES
-//====================
+//Let's take this scenario: A user can create many posts therefore we can fetch all posts with it user but in case we want to fetch all the post a user created since we didn't save the values on the user model we have to do virtual populate
 
-//toJSON and toObject are passed as a second argument to schema and this will allow the virtual property to be on the output
+//Here we associated a user to post but we didn't  associate a field on the user to fetch all the post so this is what we will do
 
-//NOTE: We cannot use virtuals in query
+//virtual populate
+userSchema.virtual('posts', {
+  ref: 'Post', //
+  foreignField: 'author', //The value used in the Post model
+  localField: '_id', //required, it represent the current model which is the user
+});
 
 userSchema.virtual('fullName').get(function () {
-  return this.name + this.password;
+  return this.firstName + ' ' + this.lastName;
 });
 
-//====================
-//DOCUMENT MIDDLEWARE
-//======================
-
-//There are four types of middleware in mongoose
-
-//1. document
-//2. query
-//3.aggregate
-//4. modelling
-
-//Document middleware operates on current processing data
-//runs before saving, it's not available in insertmany only save and create
-
-userSchema.pre('save', function (next) {
-  //we can hash a user password
-  //we can also create slug
-  this.slug = slugify(this.name, { lower: true });
-  next();
+userSchema.virtual('dob').get(function () {
+  return Date.now() - this.age;
 });
 
-//POST
-
-userSchema.post('save', function (doc, next) {
-  //Here we have the finished document
-  console.log(doc);
-  next();
+userSchema.virtual('tryPeriodLeft').get(function () {
+  return Date.now() - this.tryPeriod;
 });
+
 const User = mongoose.model('User', userSchema);
 
 export { User };

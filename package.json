@@ -21,6 +21,7 @@
   "dependencies": {
     "esm": "^3.2.25",
     "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
     "mongoose": "^5.10.14",
     "nodemon": "^2.0.6",
     "slugify": "^1.4.6"
